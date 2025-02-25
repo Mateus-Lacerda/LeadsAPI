@@ -62,7 +62,3 @@ hot_lead = HotLead(
 )
 print(hot_lead)
 ```
-
-## License
-
-Specify the license under which the project is distributed. For example, MIT License if applicable, or update with your project's license.
