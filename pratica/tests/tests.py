@@ -2,24 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from models import leads
-
-def test_hot_lead() -> None:
-    try:
-        hot_lead = leads.Lead(
-            name="Alice",
-            email="alice@mail.com",
-            address="Av. Paulista, 1000",
-            phone="+5511999999999",
-            last_contact=datetime.now(),
-            interests=[leads.Products.TWO_ROOM_APARTMENT],
-        )
-        assert hot_lead.priority == leads.Priority.High, "Priority should be High"
-        assert hot_lead.lead_type == leads.LeadType.Hot, "Lead type should be Hot"
-        assert hot_lead.lead_id in leads.Lead.__leads__.keys(), \
-            "HotLead should be in the list of leads"
-    except Exception as e:
-        raise AssertionError(f"Error creating HotLead: {e}") from e
+from ..models import leads
 
 def test_hot_lead_from_lead() -> None:
     # Exemplo 2: Criar um Lead com todos os campos preenchidos, que será transformado em HotLead
@@ -34,7 +17,7 @@ def test_hot_lead_from_lead() -> None:
         )
         assert full_lead.priority == leads.Priority.High, "Priority should be High"
         assert full_lead.lead_type == leads.LeadType.Hot, "Lead type should be Hot"
-        assert full_lead.lead_id in leads.Lead.__leads__.keys(), \
+        assert full_lead.model_dump() in leads.Lead.__leads__.values(), \
             "Lead should be in the list of leads"
         try:
             leads.HotLead(**full_lead.model_dump())
@@ -58,7 +41,8 @@ def test_warm_lead() -> None:
         )
         assert incomplete_lead.priority == leads.Priority.Medium, "Priority should be Medium"
         assert incomplete_lead.lead_type == leads.LeadType.Warm, "Lead type should be Warm"
-        assert incomplete_lead in leads.Lead.__leads__.values(), "Lead should be in the list of leads"
+        assert incomplete_lead.model_dump() in leads.Lead.__leads__.values(), \
+            "Lead should be in the list of leads"
     except Exception as e:
         raise AssertionError(f"Error creating Lead: {e}") from e
 
@@ -66,15 +50,16 @@ def test_warm_lead_no_interests() -> None:
     # Exemplo 4: Criar um Lead sem interesses (deve ser transformado em WarmLead)
     try:
         incomplete_lead = leads.Lead(
-            name="Charlie",
-            email="charlie@mail.com",
+            name="Mike",
+            email="mike@mail.com",
             address="Rua das Flores, 200",
             phone="+5511777777777",
             last_contact=datetime.now()
         )
         assert incomplete_lead.priority == leads.Priority.Medium, "Priority should be Medium"
         assert incomplete_lead.lead_type == leads.LeadType.Warm, "Lead type should be Warm"
-        assert incomplete_lead in leads.Lead.__leads__.values(), "Lead should be in the list of leads"
+        assert incomplete_lead.model_dump() in leads.Lead.__leads__.values(), \
+            "Lead should be in the list of leads"
     except Exception as e:
         raise AssertionError(f"Error creating Lead: {e}") from e
 
@@ -90,7 +75,8 @@ def test_cold_lead() -> None:
         )
         assert cold_lead.priority == leads.Priority.Low, "Priority should be Low"
         assert cold_lead.lead_type == leads.LeadType.Cold, "Lead type should be Cold"
-        assert cold_lead in leads.Lead.__leads__.values(), "Lead should be in the list of leads"
+        assert cold_lead.model_dump() in leads.Lead.__leads__.values(), \
+            "Lead should be in the list of leads"
     except Exception as e:
         raise AssertionError(f"Error creating Lead: {e}") from e
 

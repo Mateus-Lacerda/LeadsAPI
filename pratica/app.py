@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-import uvicorn
+# import uvicorn
 from api.routes.leads import router as leads_router
 from tests.tests import main as make_tests
 
@@ -12,5 +12,5 @@ app = create_app()
 
 if __name__ == "__main__":
     make_tests()
-    app = 'src.app:app'
-    uvicorn.run(app, host="localhost", port=8000, reload=True)
+    app = 'pratica.app:app'
+    # uvicorn.run(app, host="localhost", port=8000, reload=True)

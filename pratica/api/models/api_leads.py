@@ -11,7 +11,6 @@ from models.leads import Priority, Products, LeadType, StringID
 
 class LeadModel(BaseModel):
     """Lead Model for the API, used for warm and cold leads"""
-    __leads__: dict[str, dict] = {}
     name: str | None = Field(examples=["Example"])
     email: EmailStr | None = Field(
         examples=["example@mail.com"],
